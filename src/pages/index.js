@@ -11,9 +11,9 @@ export default function Home() {
       <h1>Welcome to my personal project of social media app.</h1>
       <h3>
         Please,
-        <Link href="/auth/login"> login </Link>
+        <Link href="/login"> login </Link>
         or
-        <Link href="/auth/signup"> sign up </Link>
+        <Link href="/signup"> sign up </Link>
         to start using it.
       </h3>
     </div>
