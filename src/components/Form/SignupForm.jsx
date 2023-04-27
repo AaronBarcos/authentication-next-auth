@@ -1,6 +1,7 @@
 import { useState } from "react";
 import axios from "axios";
 import { useRouter } from "next/router";
+import { getErrorMessage, loginUser } from "../../../lib/helpers";
 
 function SignupForm() {
   const [email, setEmail] = useState("");
@@ -48,7 +49,7 @@ function SignupForm() {
     }
   };
 
-  const handleSubmit = async (e) => {
+  const handleSignup = async (e) => {
     e.preventDefault();
     if (validateData()) {
       setLoading(true);
@@ -59,9 +60,19 @@ function SignupForm() {
           username,
           password,
         });
-        if (res.data.message === "User created successfully") {
-          router.push("/login");
+
+        const loginRes = await loginUser(email, password);
+
+        if (loginRes && !loginRes.ok) {
+          setSubmitError(getErrorMessage(loginRes));
+        } else {
+          router.push("/");
         }
+
+        // if (res.data.message === "User created successfully") {
+        //   router.push("/login");
+        // }
+        
       } catch (err) {
         setSubmitError(err.response.data.message);
       }
@@ -71,7 +82,7 @@ function SignupForm() {
 
   return (
     <div>
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSignup}>
         <input
           type="email"
           placeholder="Email"
