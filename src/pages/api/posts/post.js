@@ -11,7 +11,7 @@ export default async function (req, res) {
       const posts = await Post.find({}).sort({ createdAt: -1 });
       return res.status(200).json({ message: "Success", posts });
     } else if (method === "POST") {
-      const { title, image, content } = req.body;
+      const { title, image, content, author } = req.body;
       if (!title || !content) {
         return res
           .status(400)
@@ -21,6 +21,7 @@ export default async function (req, res) {
           title,
           image,
           content,
+          author
         });
         return res
           .status(200)

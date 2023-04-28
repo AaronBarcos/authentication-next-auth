@@ -1,8 +1,11 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import CreatePostForm from "../components/Form/CreatePostForm";
+import { useSession } from "next-auth/react";
 
 function dashboard() {
+
+  const { data: session, status } = useSession();
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
