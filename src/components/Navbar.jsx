@@ -1,4 +1,4 @@
-import { useSession } from "next-auth/react";
+import { useSession, signOut } from "next-auth/react";
 import Link from "next/link";
 
 function Navbar() {
@@ -22,7 +22,7 @@ function Navbar() {
               <Link href="/profile">Profile</Link>
             </li>
             <li>
-              <Link href="/api/auth/signout">Sign Out</Link>
+              <button onClick={() => signOut()}>Sign Out</button>
             </li>
           </>
         ) : (
