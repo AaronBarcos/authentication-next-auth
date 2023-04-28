@@ -6,7 +6,7 @@ function Navbar() {
 
   return (
     <nav>
-      <ul className="flex">
+      <ul className="flex justify-around ">
         <li>
           <Link href="/">Home</Link>
         </li>
