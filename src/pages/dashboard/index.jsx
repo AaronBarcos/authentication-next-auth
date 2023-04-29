@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
-import CreatePostForm from "../components/Form/CreatePostForm";
+import CreatePostForm from "../../components/Form/CreatePostForm";
 import { useSession } from "next-auth/react";
+import Link from "next/link";
 
 function dashboard() {
-
   const { data: session, status } = useSession();
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -38,16 +38,23 @@ function dashboard() {
         <h1>All posts</h1>
         <button onClick={() => setShowForm(true)}>Create Post</button>
         {showForm && (
-          <CreatePostForm showFormCreatePost={() => setShowForm(false)} getPosts={getPosts}  />
+          <CreatePostForm
+            showFormCreatePost={() => setShowForm(false)}
+            getPosts={getPosts}
+          />
         )}
         <div className="grid gap-4 grid-cols-3 grid-rows-3">
           {posts.map((post) => (
-            <div className="flex items-center" key={post._id}>
+            <Link
+              href={`/dashboard/${post._id}`}
+              className="flex items-center"
+              key={post._id}
+            >
               <h2>{post.title}</h2>
               <img src={post.image} alt={post.title} />
               <p>{post.content}</p>
               {/* <p>{post.createdAt}</p> */}
-            </div>
+            </Link>
           ))}
         </div>
       </div>

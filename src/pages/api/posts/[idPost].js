@@ -13,6 +13,9 @@ export default async function (req, res) {
       return res
         .status(200)
         .json({ message: "Post deleted successfully", post });
+    } else if (method === "GET") {
+      const post = await Post.findById(idPost);
+      return res.status(200).json({ message: "Success", post });
     } else if (method === "PUT") {
       const { title, content } = req.body;
       if (!title || !content) {
