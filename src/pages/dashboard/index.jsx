@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import CreatePostForm from "../../components/Form/CreatePostForm";
 import { useSession } from "next-auth/react";
-import Link from "next/link";
+import Modal from "@/components/ModalPost";
 
 function dashboard() {
   const { data: session, status } = useSession();
@@ -10,6 +10,8 @@ function dashboard() {
   const [loading, setLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const [showForm, setShowForm] = useState(false);
+  const [showModal, setShowModal] = useState(false);
+  const [idPost, setIdPost] = useState("");
 
   useEffect(() => {
     getPosts();
@@ -26,6 +28,12 @@ function dashboard() {
       setErrorMessage(error.response.data.message);
       setLoading(false);
     }
+  };
+
+  const handleModal = (idPost) => {
+    setIdPost(idPost);
+
+    setShowModal(true);
   };
 
   if (loading) {
@@ -45,8 +53,8 @@ function dashboard() {
         )}
         <div className="grid gap-4 grid-cols-3 grid-rows-3">
           {posts.map((post) => (
-            <Link
-              href={`/dashboard/${post._id}`}
+            <button
+              onClick={() => handleModal(post._id)}
               className="flex items-center"
               key={post._id}
             >
@@ -54,9 +62,14 @@ function dashboard() {
               <img src={post.image} alt={post.title} />
               <p>{post.content}</p>
               {/* <p>{post.createdAt}</p> */}
-            </Link>
+            </button>
           ))}
         </div>
+        {showModal && (
+          <div>
+            <Modal idPost={idPost} closeModal={() => setShowModal(false)} />
+          </div>
+        )}
       </div>
     );
   }
