@@ -1,10 +1,21 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
+import { useSession } from "next-auth/react";
 
-function Modal({ idPost, closeModal }) {
+function Modal({ idPost, closeModal, getPosts }) {
   const [post, setPost] = useState([]);
   const [loading, setLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
+  const [isOwn, setIsOwn] = useState(false);
+  const { data: session } = useSession();
+
+  useEffect(() => {
+    if (session.user._id === post.author) {
+      setIsOwn(true);
+    } else {
+      setIsOwn(false);
+    }
+  }, [session, post]);
 
   const styleModal = {
     position: "fixed",
@@ -34,6 +45,16 @@ function Modal({ idPost, closeModal }) {
     }
   };
 
+  const deletePost = async () => {
+    try {
+      await axios.delete(`/api/posts/${idPost}`);
+      getPosts();
+      closeModal();
+    } catch (error) {
+      setErrorMessage(error.response.data.message);
+    }
+  };
+
   return (
     <div style={styleModal}>
       {loading ? (
@@ -46,6 +67,9 @@ function Modal({ idPost, closeModal }) {
           <img src={post.image} alt={post.title} />
           <p>{post.content}</p>
           <button onClick={() => closeModal()}>Close</button>
+          {isOwn && (
+            <button onClick={deletePost}>Delete this post</button>
+          )}
         </div>
       )}
     </div>

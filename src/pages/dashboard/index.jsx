@@ -1,11 +1,9 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import CreatePostForm from "../../components/Form/CreatePostForm";
-import { useSession } from "next-auth/react";
 import Modal from "@/components/ModalPost";
 
 function dashboard() {
-  const { data: session, status } = useSession();
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
@@ -67,7 +65,11 @@ function dashboard() {
         </div>
         {showModal && (
           <div>
-            <Modal idPost={idPost} closeModal={() => setShowModal(false)} />
+            <Modal
+              idPost={idPost}
+              getPosts={getPosts}
+              closeModal={() => setShowModal(false)}
+            />
           </div>
         )}
       </div>

@@ -19,6 +19,9 @@ function Navbar() {
               <Link href="/dashboard">Dashboard</Link>
             </li>
             <li>
+            <Link href="/search">Search</Link>
+            </li>
+            <li>
               <Link href="/profile">Profile</Link>
             </li>
             <li>
