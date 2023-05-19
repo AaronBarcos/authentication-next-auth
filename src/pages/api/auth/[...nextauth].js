@@ -1,7 +1,6 @@
 import NextAuth from "next-auth/next";
 import { compare } from "bcryptjs";
 import CredentialsProvider from "next-auth/providers/credentials";
-import axios from "axios";
 import dbConnect from "../../../../lib/db";
 import User from "../../../../lib/models/User.model";
 
@@ -68,6 +67,8 @@ export default NextAuth({
 
   session: {
     strategy: "jwt",
+    maxAge: 30 * 24 * 60 * 60, // 30 days
+    updateAge: 24 * 60 * 60, // 24 hours
   },
 
   callbacks: {
