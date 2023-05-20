@@ -5,12 +5,14 @@ export default async function (req, res) {
   await dbConnect();
 
   const { method } = req;
-  const { search } = req.query;
+  const { user } = req.query;
 
   try {
     if (method === "GET") {
-      const user = await User.find({ search });
-      return res.status(200).json({ message: "Success", user });
+      const users = await User.find({
+        username: { $regex: user, $options: "i" },
+      }).sort({ createdAt: -1 });
+      return res.status(200).json({ message: "Success", users });
     } else {
       return res.status(400).json({ message: "Method not allowed" });
     }
