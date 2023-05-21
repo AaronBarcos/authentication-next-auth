@@ -1,14 +1,15 @@
 import dbConnect from "../../../../lib/db/index.js";
 import User from "../../../../lib/models/User.model.js";
+import { useSession } from "next-auth/react";
 
 export default async function (req, res) {
   await dbConnect();
 
   const { method } = req;
-  const { user } = req.query;
 
   try {
     if (method === "GET") {
+      const { user } = req.query;
       const users = await User.find({
         username: { $regex: user, $options: "i" },
       }).sort({ createdAt: -1 });
