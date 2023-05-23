@@ -10,37 +10,30 @@ function CreatePostForm({ showFormCreatePost, getPosts }) {
   const [loading, setLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
 
-  const handleImageUpload = async (e) => {
-    const file = e.target.files[0];
-    const formData = new FormData();
-    console.log(file);
-    
-    try {
-      formData.append("file", file);
-      formData.append("upload_preset", "nextjsblog");
-      const res = await axios.post("/api/upload/postImage", formData);
-      setImage(res.data.image);
-    }
-    catch (error) {
-      setErrorMessage(error.response.data.message);
-    }
-
-  };
 
   const handleCreatePost = async (e) => {
     e.preventDefault();
     setLoading(true);
+    setErrorMessage("");
     try {
+      const formData = new FormData();
+      formData.append("file", image);
+      formData.append("upload_preset", "ga1kvpom");
+
+      const response = await axios.post(
+        "https://api.cloudinary.com/v1_1/dfbwgeisn/image/upload",
+        formData
+      );
+
       await axios.post("/api/posts/post", {
         title,
-        image,
+        image: response.data.secure_url,
         content,
-        author: session.user._id,
       });
-      setErrorMessage("");
+
       setLoading(false);
-      showFormCreatePost();
       getPosts();
+      showFormCreatePost();
     } catch (error) {
       setErrorMessage(error.response.data.message);
       setLoading(false);
@@ -55,13 +48,11 @@ function CreatePostForm({ showFormCreatePost, getPosts }) {
           placeholder="Title"
           onChange={(e) => setTitle(e.target.value)}
         />
-        <input type="file" onChange={handleImageUpload} />
-        {image && (
-          <div>
-            <h3>Image preview</h3>
-            <img src={image} alt="Uploaded" />
-          </div>
-        )}
+        <input
+          type="file"
+          placeholder="Image"
+          onChange={(e) => setImage(e.target.files[0])}
+        />
         <input
           type="text"
           placeholder="Content"
