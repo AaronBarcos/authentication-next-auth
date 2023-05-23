@@ -59,7 +59,6 @@ function dashboard() {
               <h2>{post.title}</h2>
               <img src={post.image} alt={post.title} />
               <p>{post.content}</p>
-              {/* <p>{post.createdAt}</p> */}
             </button>
           ))}
         </div>

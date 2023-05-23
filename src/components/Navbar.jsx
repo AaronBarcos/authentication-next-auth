@@ -2,7 +2,7 @@ import { useSession, signOut } from "next-auth/react";
 import Link from "next/link";
 
 function Navbar() {
-  const { data: session, status } = useSession();
+  const { data: session } = useSession();
 
   return (
     <nav>
@@ -17,9 +17,6 @@ function Navbar() {
           <>
             <li>
               <Link href="/dashboard">Dashboard</Link>
-            </li>
-            <li>
-            <Link href="/search">Search</Link>
             </li>
             <li>
               <Link href="/profile">Profile</Link>

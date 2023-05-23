@@ -3,13 +3,29 @@ import axios from "axios";
 import { useSession } from "next-auth/react";
 
 function CreatePostForm({ showFormCreatePost, getPosts }) {
-    
   const { data: session } = useSession();
   const [title, setTitle] = useState("");
-  const [image, setImage] = useState("");
+  const [image, setImage] = useState(null);
   const [content, setContent] = useState("");
   const [loading, setLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
+
+  const handleImageUpload = async (e) => {
+    const file = e.target.files[0];
+    const formData = new FormData();
+    console.log(file);
+    
+    try {
+      formData.append("file", file);
+      formData.append("upload_preset", "nextjsblog");
+      const res = await axios.post("/api/upload/postImage", formData);
+      setImage(res.data.image);
+    }
+    catch (error) {
+      setErrorMessage(error.response.data.message);
+    }
+
+  };
 
   const handleCreatePost = async (e) => {
     e.preventDefault();
@@ -39,11 +55,13 @@ function CreatePostForm({ showFormCreatePost, getPosts }) {
           placeholder="Title"
           onChange={(e) => setTitle(e.target.value)}
         />
-        <input
-          type="text"
-          placeholder="Image"
-          onChange={(e) => setImage(e.target.value)}
-        />
+        <input type="file" onChange={handleImageUpload} />
+        {image && (
+          <div>
+            <h3>Image preview</h3>
+            <img src={image} alt="Uploaded" />
+          </div>
+        )}
         <input
           type="text"
           placeholder="Content"
