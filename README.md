@@ -42,3 +42,4 @@ Features:
 - Next-Auth
 - JWT
 - Middleware
+- Cloudinary API
