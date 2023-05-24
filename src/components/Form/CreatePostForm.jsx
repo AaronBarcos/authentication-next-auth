@@ -1,15 +1,12 @@
 import { useState } from "react";
 import axios from "axios";
-import { useSession } from "next-auth/react";
 
 function CreatePostForm({ showFormCreatePost, getPosts }) {
-  const { data: session } = useSession();
   const [title, setTitle] = useState("");
   const [image, setImage] = useState(null);
   const [content, setContent] = useState("");
   const [loading, setLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
-
 
   const handleCreatePost = async (e) => {
     e.preventDefault();
@@ -18,10 +15,13 @@ function CreatePostForm({ showFormCreatePost, getPosts }) {
     try {
       const formData = new FormData();
       formData.append("file", image);
-      formData.append("upload_preset", "ga1kvpom");
+      formData.append(
+        "upload_preset",
+        `${process.env.CLOUDINARY_UPLOAD_PRESET}`
+      );
 
       const response = await axios.post(
-        "https://api.cloudinary.com/v1_1/dfbwgeisn/image/upload",
+        `https://api.cloudinary.com/v1_1/${process.env.CLOUDINARY_CLOUD_NAME}/image/upload`,
         formData
       );
 
