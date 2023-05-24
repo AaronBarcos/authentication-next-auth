@@ -1,5 +1,6 @@
 import { useState } from "react";
 import axios from "axios";
+import { useSession } from "next-auth/react";
 
 function CreatePostForm({ showFormCreatePost, getPosts }) {
   const [title, setTitle] = useState("");
@@ -7,6 +8,7 @@ function CreatePostForm({ showFormCreatePost, getPosts }) {
   const [content, setContent] = useState("");
   const [loading, setLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
+  const { data: session } = useSession();
 
   const handleCreatePost = async (e) => {
     e.preventDefault();
@@ -29,6 +31,7 @@ function CreatePostForm({ showFormCreatePost, getPosts }) {
         title,
         image: response.data.secure_url,
         content,
+        author: session.user._id,
       });
 
       setLoading(false);
