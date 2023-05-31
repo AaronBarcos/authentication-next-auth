@@ -4,7 +4,7 @@ import { useSession } from "next-auth/react";
 import crypto from "crypto";
 import { set } from "lodash";
 
-function Modal({ idPost, closeModal, getPosts }) {
+function Modal({ idPost, closeModal }) {
   const [post, setPost] = useState([]);
   const [loading, setLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
@@ -85,7 +85,6 @@ function Modal({ idPost, closeModal, getPosts }) {
         api_key: apiKey,
         timestamp: timestamp,
       });
-      getPosts();
       closeModal();
       setLoading(false);
     } catch (error) {

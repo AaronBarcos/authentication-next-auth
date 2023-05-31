@@ -2,7 +2,7 @@ import { useState } from "react";
 import axios from "axios";
 import { useSession } from "next-auth/react";
 
-function CreatePostForm({ showFormCreatePost, getPosts }) {
+function CreatePostForm({ showFormCreatePost }) {
   const [title, setTitle] = useState("");
   const [image, setImage] = useState(null);
   const [content, setContent] = useState("");
@@ -35,7 +35,6 @@ function CreatePostForm({ showFormCreatePost, getPosts }) {
       });
 
       setLoading(false);
-      getPosts();
       showFormCreatePost();
     } catch (error) {
       setErrorMessage(error.response.data.message);

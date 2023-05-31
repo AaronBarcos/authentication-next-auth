@@ -13,7 +13,7 @@ function dashboard() {
 
   useEffect(() => {
     getPosts();
-  }, []);
+  }, [showModal, showForm]);
 
   const getPosts = async () => {
     setLoading(true);
@@ -46,7 +46,6 @@ function dashboard() {
         {showForm && (
           <CreatePostForm
             showFormCreatePost={() => setShowForm(false)}
-            getPosts={getPosts}
           />
         )}
         <div className="grid gap-4 grid-cols-3 grid-rows-3">
@@ -66,7 +65,7 @@ function dashboard() {
           <div>
             <Modal
               idPost={idPost}
-              getPosts={getPosts}
+
               closeModal={() => setShowModal(false)}
             />
           </div>
